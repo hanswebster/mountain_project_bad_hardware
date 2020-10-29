@@ -1,12 +1,17 @@
 from bs4 import BeautifulSoup
+import requests
 
+from .route_page import RoutePage
 from locators.area_page_locators import AreaPageLocators, AreaPagePrinterLocators
 from parsers.photo import PhotoParser
 from parsers.comment import CommentParser
-from parsers.subcomponent import SubcomponentParser
+#from parsers.subcomponent import SubcomponentParser
 
 class AreaPage:
-    def __init__(self, page, printer_page): # page of html from requests
+    def __init__(self, url): # page of html from requests
+        self.url = url
+        page = requests.get(url).content
+        printer_page = requests.get(url+'?print=1').content
         self.soup = BeautifulSoup(page, 'html.parser')
         self.printer_soup = BeautifulSoup(printer_page, 'html.parser')
 
@@ -26,10 +31,14 @@ class AreaPage:
     def subcomponent(self):
         if self.sub_type == 'Routes':
             locator = AreaPageLocators.SUBROUTE
-        else:
+            subcomponent_tags = self.soup.select(locator)
+            links = [tag.attrs['href'] for tag in subcomponent_tags]
+            return [RoutePage(link) for link in links] #possibly replace return a route page with just process route to DB
+        else: 
             locator = AreaPageLocators.SUBAREA
-        subcomponent_tags = self.soup.select(locator)
-        return [SubcomponentParser(e) for e in subcomponent_tags]
+            subcomponent_tags = self.soup.select(locator) #.attrs['href'] #for links
+            links = [tag.attrs['href'] for tag in subcomponent_tags]
+            return [AreaPage(link) for link in links]
     
     @property
     def description(self):

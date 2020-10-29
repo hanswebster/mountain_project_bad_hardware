@@ -1,4 +1,4 @@
-#import logging
+import 
 
 #from locators.photo_locators import PhotoLocators
 
@@ -16,7 +16,10 @@ class SubcomponentParser:
 
     @property
     def link(self): # use alt attr
-        #locator = PhotoLocators.CAPTION
         link = self.parent.attrs['href']
         #logger.debug(f'found book: `{book_title}`')
         return link
+
+    @property
+    def sub_page(self):
+        return 
