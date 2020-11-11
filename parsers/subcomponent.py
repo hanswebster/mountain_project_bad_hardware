@@ -1,3 +1,6 @@
+#deprecated as of last commit (oct 28 2020)
+
+
 import 
 
 #from locators.photo_locators import PhotoLocators

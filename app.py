@@ -13,9 +13,10 @@ logger = logging.getLogger('books_app')
 '''
 
 
-page_content = 'https://www.mountainproject.com/route/109070301/black-gold'
+page_content = 'https://www.mountainproject.com/route/105755620/knot-carrot'
 route_page = RoutePage(page_content)
 print(route_page.name)
+print(route_page.description)
 #print(route_page.protection)
 #print(route_page.photo_captions)
 #print(route_page.comments)

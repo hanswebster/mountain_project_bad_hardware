@@ -4,6 +4,7 @@ import requests
 from locators.route_page_locators import RoutePagePrinterLocators
 from parsers.photo import PhotoParser
 from parsers.comment import CommentParser
+from text_miners import bolt_text_bad
 
 #logger = logging.getLogger('books_app.books_page')
 
@@ -21,16 +22,16 @@ class RoutePage:
         
     @property
     def description(self):
-        locator = RoutePagePrinterLocators.DESCRIPTION
-        description_tag = self.soup.select(locator)[0]
-        #print(description_tag.get_text())
+        #locator = RoutePagePrinterLocators.DESCRIPTION
+        description_title_tags = self.soup.find('h3', string='Description')
+        description_tag = description_title_tags.find_next_sibling('div')
         return description_tag.get_text()
 
     @property
     def protection(self):
-        locator = RoutePagePrinterLocators.PROTECTION
-        protection_tag = self.soup.select(locator)[2]
-        #print(protection_tag.get_text())
+        #locator = RoutePagePrinterLocators.PROTECTION
+        protection_title_tags = self.soup.find('h3', string='Protection')
+        protection_tag = protection_title_tags.find_next_sibling('div')
         return protection_tag.get_text()
 
     @property
@@ -44,3 +45,19 @@ class RoutePage:
         locator = RoutePagePrinterLocators.COMMENTS
         comment_tags = self.soup.select(locator)
         return [CommentParser(e) for e in comment_tags]
+    
+    @property
+    def bad_gear(self): #return boolean (implemented) and indeces (eventually) for flagged comments and other areas
+        desc_bad = bolt_text_bad(self.description)
+        protec_bad = bolt_text_bad(self.protection)
+        
+        photo_bad = False
+        for photo in self.photo_captions:
+            photo_bad = photo_bad or bolt_text_bad(photo.caption)
+
+        comment_bad = False
+        for comment in self.comments:
+            comment_bad = comment_bad or bolt_text_bad(comment.content)
+        
+        return any([desc_bad, protec_bad, photo_bad, comment_bad])
+
