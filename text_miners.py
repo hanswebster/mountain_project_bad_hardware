@@ -5,13 +5,18 @@ from nltk.corpus import stopwords, wordnet
 from nltk.stem import PorterStemmer
 from nltk.stem.wordnet import WordNetLemmatizer
 
-from keywords import bad_bolt_adj_syns
+from keywords import bad_bolt_adj_syns, bad_bolt_explicits
 
 ps = PorterStemmer()
 adj_tags = ['JJ', 'JJR', 'JJS']
 
 def bolt_text_bad(text):
+    for phrase in bad_bolt_explicits: # check for explicits first
+        if phrase in text:
+            return True
+
     tokenized_sent = sent_tokenize(text)
+    #print(tokenized_sent)
     result = False
     for sent in tokenized_sent:
         result = result or bolt_sent_bad(sent)
@@ -44,3 +49,5 @@ def bolt_sent_bad(sent): #TODO: add logging here
 
 
 
+text = 'There is a star-drive bolt'
+print(bolt_text_bad(text))
