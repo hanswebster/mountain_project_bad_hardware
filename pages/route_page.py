@@ -24,15 +24,21 @@ class RoutePage:
     def description(self):
         #locator = RoutePagePrinterLocators.DESCRIPTION
         description_title_tags = self.soup.find('h3', string='Description')
-        description_tag = description_title_tags.find_next_sibling('div')
-        return description_tag.get_text()
+        try:
+            description_tag = description_title_tags.find_next_sibling('div')
+            return description_tag.get_text()
+        except AttributeError:
+            return ''
 
     @property
     def protection(self):
         #locator = RoutePagePrinterLocators.PROTECTION
         protection_title_tags = self.soup.find('h3', string='Protection')
-        protection_tag = protection_title_tags.find_next_sibling('div')
-        return protection_tag.get_text()
+        try:
+            protection_tag = protection_title_tags.find_next_sibling('div')
+            return protection_tag.get_text()
+        except AttributeError:
+            return ''
 
     @property
     def photo_captions(self):
@@ -58,6 +64,6 @@ class RoutePage:
         comment_bad = False
         for comment in self.comments:
             comment_bad = comment_bad or bolt_text_bad(comment.content)
-        
+        #print([desc_bad, protec_bad, photo_bad, comment_bad])
         return any([desc_bad, protec_bad, photo_bad, comment_bad])
 

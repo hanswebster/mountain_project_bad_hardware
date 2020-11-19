@@ -22,7 +22,7 @@ class AreaPage:
         return name_tag.get_text()
 
     @property
-    def sub_type(self):
+    def sub_type(self): 
         locator = AreaPageLocators.SUBTYPE
         sub_type_tag = self.soup.select(locator)[0]
         return sub_type_tag.get_text().split()[0] # extract first word
@@ -42,8 +42,10 @@ class AreaPage:
     
     @property
     def description(self):
-        locator = AreaPagePrinterLocators.DESCRIPTION
-        description_tag = self.printer_soup.select(locator)[0]
+        #locator = AreaPagePrinterLocators.DESCRIPTION
+        #description_tag = self.printer_soup.select(locator)[0]
+        description_title_tags = self.soup.find('h3', string='Description')
+        description_tag = description_title_tags.find_next_sibling('div')
         return description_tag.get_text()
 
     @property

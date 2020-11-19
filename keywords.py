@@ -11,6 +11,7 @@ bolt_stem_set = set(bolt_stems)
 
 
 bad_bolt_explicits = ['star-drive', 'stardrive', 'button-head', 'buttonhead', 'button head', 'quarter-in', 'quarterin', 'quarter in', '1/4 in', '1/4in', '1/4"']
+
 bad_bolt_verbs = ['replace', 'repair', 'fix', 'maintain']
 bad_bolt_vb_syns = set([])
 for vb in bad_bolt_verbs:

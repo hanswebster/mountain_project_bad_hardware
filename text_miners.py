@@ -5,7 +5,7 @@ from nltk.corpus import stopwords, wordnet
 from nltk.stem import PorterStemmer
 from nltk.stem.wordnet import WordNetLemmatizer
 
-from keywords import bad_bolt_adj_syns,bad_bolt_vb_syns, bad_bolt_explicits, bolt_stem_set
+from keywords import bad_bolt_adj_syns, bad_bolt_vb_syns, bad_bolt_explicits, bolt_stem_set
 
 ps = PorterStemmer()
 adj_vb_tags = ['ADJ', 'ADV', 'VERB']
@@ -19,7 +19,9 @@ def bolt_text_bad(text):
     return has_bolts_and_trigger_words(text)
 
 def has_bolts_and_trigger_words(text):
-    text = text + ". sample sentence"
+    if text and text.strip()[-1] not in '!.?':
+        text += '.'
+    text += " sample sentence."
     tokenized_word = word_tokenize(text)
     word_with_pos = nltk.pos_tag(tokenized_word, tagset='universal')
     
@@ -51,22 +53,20 @@ def bolt_sent_bad(sent): #TODO: add logging here
     for word in word_tokens:
         stemmed_words.append(ps.stem(word))
 
-    close_adj_list = []
+    close_adj_vb_list = []
     for pair in sent_with_pos: #TODO: replace this nested loop with better dictionary for hyphens later
         if pair[1] in adj_vb_tags:
             pair_words = pair[0].split('-')
             for word in pair_words:
-                close_adj_list.append(word)
+                close_adj_vb_list.append(word)
     #print(close_adj_list)
 
-    close_adj_syns = set([]) # abstract this into function, then import
-    for adj in close_adj_list:
-        syns = wordnet.synsets(adj)
+    close_adj_vb_syns = set([]) # abstract this into function, then import
+    for wd in close_adj_vb_list:
+        syns = wordnet.synsets(wd)
         syn_words = set([syn.lemmas()[0].name() for syn in syns])
-        close_adj_syns = close_adj_syns | syn_words
-    #print(close_adj_syns)
-    #print(bad_bolt_adj_syns)
-    return bool(bad_bolt_adj_syns & close_adj_syns) or bool(bad_bolt_vb_syns & close_adj_syns)
+        close_adj_vb_syns = close_adj_vb_syns | syn_words
+    return bool(bad_bolt_adj_syns & close_adj_vb_syns) or bool(bad_bolt_vb_syns & close_adj_vb_syns)
 
 
 def bolt_sent(sent): # list[tuple[str, str]]) -> bool: #TODO: add logging here
