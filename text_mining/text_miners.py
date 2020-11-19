@@ -5,7 +5,7 @@ from nltk.corpus import stopwords, wordnet
 from nltk.stem import PorterStemmer
 from nltk.stem.wordnet import WordNetLemmatizer
 
-from keywords import bad_bolt_adj_syns, bad_bolt_vb_syns, bad_bolt_explicits, bolt_stem_set
+from .keywords import bad_bolt_adj_syns, bad_bolt_vb_syns, bad_bolt_explicits, bolt_stem_set
 
 ps = PorterStemmer()
 adj_vb_tags = ['ADJ', 'ADV', 'VERB']

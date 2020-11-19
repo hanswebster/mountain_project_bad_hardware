@@ -4,7 +4,7 @@ import requests
 from locators.route_page_locators import RoutePagePrinterLocators
 from parsers.photo import PhotoParser
 from parsers.comment import CommentParser
-from text_miners import bolt_text_bad
+from text_mining.text_miners import bolt_text_bad
 
 #logger = logging.getLogger('books_app.books_page')
 
