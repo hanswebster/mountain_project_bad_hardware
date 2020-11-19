@@ -6,11 +6,11 @@ class TestTextMiner(unittest.TestCase):
         text = 'There is a button head bolt'
         self.assertTrue(bolt_text_bad(text))
     
-    def test_good_sent_bad_sent(self): #fail
+    def test_good_sent_bad_sent(self):
         text = 'there is a good hanger. There is a bad crimp'
         self.assertFalse(bolt_text_bad(text))
 
-    def test_missing(self): #fail
+    def test_missing(self):
         text = 'The hanger is missing'
         self.assertTrue(bolt_text_bad(text))
     
@@ -22,7 +22,7 @@ class TestTextMiner(unittest.TestCase):
         text = 'There is a bad bolt.'
         self.assertTrue(bolt_text_bad(text))
 
-    def test_permas(self): #fail
+    def test_permas(self): 
         text = 'the permas are worn'
         self.assertTrue(bolt_text_bad(text))
 
@@ -38,13 +38,13 @@ class TestTextMiner(unittest.TestCase):
         text = 'Someone should replace the rings'
         self.assertTrue(bolt_text_bad(text))
     
-    def test_rust(self): #fail
+    def test_rust(self):
         text = 'The hanger is rusted'
         self.assertTrue(bolt_text_bad(text))
 
     def test_spinning(self): #fail # look for lemma spin in sent with hardware
         text = 'The bolt spins. There is a bad crimp'
-        self.assertFalse(bolt_text_bad(text))
+        self.assertTrue(bolt_text_bad(text))
     
     def test_star_drive(self):
         text = 'There is a star-drive bolt' #look for words star and drive in same sentence
