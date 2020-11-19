@@ -53,17 +53,16 @@ class RoutePage:
         return [CommentParser(e) for e in comment_tags]
     
     @property
-    def bad_gear(self): #return boolean (implemented) and indeces (eventually) for flagged comments and other areas
-        desc_bad = bolt_text_bad(self.description)
-        protec_bad = bolt_text_bad(self.protection)
+    def bad_gear(self): #return dict with bool for any flags and other fields for
+        flag = []
+        flag += bolt_text_bad(self.description)
+        flag += bolt_text_bad(self.protection)
         
-        photo_bad = False
         for photo in self.photo_captions:
-            photo_bad = photo_bad or bolt_text_bad(photo.caption)
+            flag += bolt_text_bad(photo.caption)
 
-        comment_bad = False
         for comment in self.comments:
-            comment_bad = comment_bad or bolt_text_bad(comment.content)
-        #print([desc_bad, protec_bad, photo_bad, comment_bad])
-        return any([desc_bad, protec_bad, photo_bad, comment_bad])
+            flag += bolt_text_bad(comment.content)
+        
+        return flag
 
