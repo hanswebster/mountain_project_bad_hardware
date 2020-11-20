@@ -1,5 +1,3 @@
-#from typing import List, Tuple
-
 from storage.database_connection import DatabaseConnection
 
 
@@ -7,7 +5,6 @@ def create_check_route_table():
     with DatabaseConnection('routes.db') as connection:
         cursor = connection.cursor()
         cursor.execute(" SELECT count(name) FROM sqlite_master WHERE type='table' AND name='routes' ")
-        #print(cursor.fetchone()[0])
         if cursor.fetchone()[0] == 0:
             cursor.execute('CREATE TABLE routes (id integer primary key, name text, link text, flagged integer, flag_description text default none)')
 

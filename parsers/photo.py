@@ -1,8 +1,4 @@
-#import logging
 
-#from locators.photo_locators import PhotoLocators
-
-#logger = logging.getLogger('books_app.books_page')
 
 class PhotoParser:
     """

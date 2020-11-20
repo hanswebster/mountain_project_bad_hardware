@@ -11,3 +11,5 @@ storage/__pycache__/*
 tests/__pycache__/*
 text_mining/__pycache__/*
 app.py
+parsers/subcomponent.py
+requirements.txt
